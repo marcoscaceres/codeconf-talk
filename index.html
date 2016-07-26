@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>Fundamentals of ECMAScript</title>
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <link rel="stylesheet" href="css/theme/mozilla-sandstone.css" id="theme">
+  <link rel="stylesheet" href="css/reveal.css">
+  <!-- For syntax highlighting -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
+  <!-- If the query includes 'print-pdf', include the PDF print sheet -->
+  <script>
+  if (window.location.search.match(/print-pdf/gi)) {
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.type = 'text/css';
+    link.href = 'css/print/pdf.css';
+    document.getElementsByTagName('head')[0].appendChild(link);
+  }
+  function showNotification(){
+    Notification.requestPermission()
+      .then(perm => {
+        if(perm !== "granted") {
+          return;
+        }
+        const noti = new Notification("OMG HI");
+        noti.onclick = doSomething;
+      });
+  }
+  </script>
+  <script src="lib/js/head.min.js" defer></script>
+  <script src="js/reveal.js" defer></script>
+  <script src="js/async.js"></script>
+  <script src="js/registration.js"></script>
+</head>
+
+<body>
+  <div class="reveal">
+    <!-- Any section element inside of this container is displayed as a slide -->
+    <div class="slides">
+      <section>
+        <h1>Progressively <br> Approaching <br> Service Workers</h1>
+        <h2>Code 2016</h2>
+      </section>
+      <section data-background="images/dom.jpg" data-background-size="60%">
+      </section>
+      <section>
+        <h2>Getting hold of the SW <br> Registration</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+navigator
+  .serviceWorker
+  .register("sw.js")
+  .then(reg => console.log(reg));
+        </code>
+        </pre>
+      </section>
+      <section>
+        <h2>Beholding aspects of the SW registration</h2>
+        <ul>
+          <li>Messaging your service worker</li>
+          <li>Push Registration</li>
+          <li>Sync manager</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Amazing! But sounds like work...</h2>
+      </section>
+      <section>
+        <h1>"One weird trick"</h1>
+        <ul>
+          <li class="fragment">Most APIs are available Window object.</li>
+          <li class="fragment">Easy to experiment and get up and going.</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Service Workers Building Blocks</h2>
+        <ul>
+          <li>Promises</li>
+          <li>Fetch API</li>
+          <li>Cache API</li>
+          <li>Notifications</li>
+          <li>Push API</li>
+          <li>And so on...</li>
+        </ul>
+      </section>
+      <section>
+        <h2>Fetch API</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+fetch(requestOrURL)
+  .then(resp => res.json())
+  .then(json => process(json))
+        </code></pre>
+      </section>
+      <section>
+        <h2><code>Request</code> objects</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+// Let's post some JSON
+var req = new Request("./process", {
+  method: "POST",
+  body: JSON.stringify({greeting: "Hi"})
+});
+fetch(req)
+  .then(letsLookAtResponse);
+        </code></pre>
+      </section>
+      <section>
+        <h2><code>Response</code> objects</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+var body = "<h1>Not found</h1>";
+var res = new Response(body, {
+  status: 404,
+  statusText: "Not Found"
+});
+        </code></pre>
+      </section>
+      <section>
+        <h2>HTTP <code>Headers</code> objects</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+req.headers.set("x-whatevs", "awesome");
+res.headers.get("x-whatevs", "awesome");
+        </code></pre>
+      </section>
+      <section>
+        <h2>Headers is just a Map</h2>
+      </section>
+      <section>
+        <h2>Cache API</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+const urls = ["./", ""];
+caches.open("test-cache")
+  .then(cache => cache.addAll(urls))
+        </code></pre>
+      </section>
+      <section>
+        <h2>Viewing caches</h2>
+        <pre><code contenteditable data-trim>
+caches.keys()
+  .then(k => console.log(k));
+        </code></pre>
+      </section>
+      <section>
+        <h2>Notifications (<button onclick="showNotification()">❤️</button>)</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+Notification.requestPermission()
+  .then(perm => {
+    if(perm !== "granted") {
+      return;
+    }
+    const noti = new Notification("OMG HI");
+    noti.onclick = doSomething;
+  });
+        </code></pre>
+      </section>
+      <section>
+        <h2>Push</h2>
+      </section>
+      <section>
+        <h2>about:debugging#workers</h2>
+      </section>
+      <section>
+        <h2>Learn to ❤️ specs</h2>
+      </section>
+      <section>
+        <h2>Ok, ❤️ MDN</h2>
+      </section>
+      <section>
+        <h2>...And ❤️ service workers cookbook</h2>
+      </section>
+      <section>
+        <h2>Thanks!</h2>
+      </section>
+    </div>
+  </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", ()=>{
+    // Full list of configuration options available here:
+    // https://github.com/hakimel/reveal.js#configuration
+    Reveal.initialize({
+      controls: true,
+      progress: true,
+      history: true,
+      center: true,
+
+      theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+      transition: Reveal.getQueryHash().transition || 'fade', // default/cube/page/concave/zoom/linear/fade/none
+
+      // Parallax scrolling
+      //parallaxBackgroundImage: 'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg',
+      //parallaxBackgroundSize: '2100px 900px',
+
+      // Optional libraries used to extend on reveal.js
+      dependencies: [{
+        src: 'lib/js/classList.js',
+        condition: function() {
+          return !document.body.classList;
+        }
+      }, {
+        src: 'plugin/markdown/marked.js',
+        condition: function() {
+          return !!document.querySelector('[data-markdown]');
+        }
+      }, {
+        src: 'plugin/markdown/markdown.js',
+        condition: function() {
+          return !!document.querySelector('[data-markdown]');
+        }
+      }, {
+        src: 'plugin/highlight/highlight.js',
+        async: true,
+        callback: function() {
+          hljs.initHighlightingOnLoad();
+        }
+      }, {
+        src: 'plugin/zoom-js/zoom.js',
+        async: true,
+        condition: function() {
+          return !!document.body.classList;
+        }
+      }, ]
+    });
+  });
+  </script>
+</body>
+
+</html>
