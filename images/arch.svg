@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg width="846px" height="533px" viewBox="0 0 846 533" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:sketch="http://www.bohemiancoding.com/sketch/ns">
+    <title>arch</title>
+    <description>Created with Sketch (http://www.bohemiancoding.com/sketch)</description>
+    <defs></defs>
+    <g id="Page-1" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd" sketch:type="MSPage">
+        <g id="Group" sketch:type="MSLayerGroup" transform="translate(-51.000000, 0.000000)">
+            <text id="📄" sketch:type="MSTextLayer" font-family="Apple Color Emoji" font-size="100" font-weight="normal" letter-spacing="14" fill="#000000">
+                <tspan x="208" y="201">📄</tspan>
+            </text>
+            <text id="📄" sketch:type="MSTextLayer" font-family="Apple Color Emoji" font-size="100" font-weight="normal" letter-spacing="14" fill="#000000">
+                <tspan x="81" y="266">📄</tspan>
+            </text>
+            <text id="📄" sketch:type="MSTextLayer" font-family="Apple Color Emoji" font-size="100" font-weight="normal" letter-spacing="14" fill="#000000">
+                <tspan x="221" y="332">📄</tspan>
+            </text>
+            <text id="🔮" sketch:type="MSTextLayer" font-family="Apple Color Emoji" font-size="150" font-weight="normal" letter-spacing="14" fill="#000000">
+                <tspan x="613" y="334">🔮</tspan>
+            </text>
+            <text id="&quot;clients&quot;" sketch:type="MSTextLayer" font-family="Monaco" font-size="50" font-weight="normal" sketch:alignment="middle" letter-spacing="1" fill="#000000">
+                <tspan x="68.4780273" y="444">"clients"</tspan>
+            </text>
+            <text id="ServiceWorker" sketch:type="MSTextLayer" font-family="Monaco" font-size="50" font-weight="normal" sketch:alignment="middle" letter-spacing="1" fill="#000000">
+                <tspan x="493.468262" y="444">ServiceWorker</tspan>
+                <tspan x="524.473145" y="511.174805">(scope "/")</tspan>
+            </text>
+            <path d="M433.238281,102.914062 L433.238281,517.047098" id="Path-1" stroke="#979797" sketch:type="MSShapeGroup"></path>
+            <text id="Architecture" sketch:type="MSTextLayer" font-family="Monaco" font-size="50" font-weight="normal" sketch:alignment="middle" letter-spacing="1" fill="#000000">
+                <tspan x="273" y="50">Architecture</tspan>
+            </text>
+        </g>
+    </g>
+</svg>
