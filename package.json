@@ -1,6 +1,6 @@
 {
   "name": "code-2016-pwa-talk",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Talk about progressive web apps",
   "scripts": {
     "mocha": "mocha",

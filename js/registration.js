@@ -17,6 +17,7 @@
       console.info("No registration, so register.");
       try {
         reg = yield navigator.serviceWorker.register("sw.js");
+        yield reg.pushManager.subscribe();
       } catch (err) {
         console.error("SW Registration failed:", err);
       }

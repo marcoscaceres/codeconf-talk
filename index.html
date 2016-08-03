@@ -20,14 +20,15 @@
     link.href = 'css/print/pdf.css';
     document.getElementsByTagName('head')[0].appendChild(link);
   }
-  function showNotification(){
+
+  function showNotification() {
     Notification.requestPermission()
       .then(perm => {
-        if(perm !== "granted") {
+        if (perm !== "granted") {
           return;
         }
         const noti = new Notification("OMG HI");
-        noti.onclick = doSomething;
+        noti.onclick = () => console.log("click!");
       });
   }
   </script>
@@ -47,6 +48,28 @@
       </section>
       <section data-background="images/dom.jpg" data-background-size="60%">
       </section>
+      <section data-background="images/ext_web_manifesto.png" data-background-size="100%" data-background-position="bottom left">
+        <h2>Service Workers are hard</h2>
+        <p>Sorry, not sorry 👍</p>
+      </section>
+      <section>
+        <pre class="javascript"><code contenteditable data-trim>
+navigator.serviceWorker.register("sw.js");
+        </code></pre>
+      </section>
+      <section>
+        <h2>Architecture of <br> Service Worker</h2>
+      </section>
+      <section data-background="images/sw1.png">
+      </section>
+      <section data-background="images/sw2.png">
+      </section>
+      <section data-background="images/sw3.png">
+      </section>
+      <section data-background="images/sw4.png">
+      </section>
+      <section data-background="images/sw5.png">
+      </section>
       <section>
         <h2>Getting hold of the SW <br> Registration</h2>
         <pre class="javascript"><code contenteditable data-trim>
@@ -58,11 +81,12 @@ navigator
         </pre>
       </section>
       <section>
-        <h2>Beholding aspects of the SW registration</h2>
+        <h2>Behold the<br> SW registration</h2>
         <ul>
-          <li>Messaging your service worker</li>
-          <li>Push Registration</li>
-          <li>Sync manager</li>
+          <li class="fragment">Life cycle events</li>
+          <li class="fragment">Push Registration</li>
+          <li class="fragment">Sync Manager</li>
+          <li class="fragment">And more in the future...</li>
         </ul>
       </section>
       <section>
@@ -71,28 +95,75 @@ navigator
       <section>
         <h1>"One weird trick"</h1>
         <ul>
-          <li class="fragment">Most APIs are available Window object.</li>
+          <li class="fragment">Most APIs are available <code>Window</code> object.</li>
           <li class="fragment">Easy to experiment and get up and going.</li>
         </ul>
       </section>
       <section>
         <h2>Service Workers Building Blocks</h2>
         <ul>
-          <li>Promises</li>
-          <li>Fetch API</li>
-          <li>Cache API</li>
-          <li>Notifications</li>
-          <li>Push API</li>
-          <li>And so on...</li>
+          <li class="fragment">Fetch API</li>
+          <li class="fragment">Cache API</li>
+          <li class="fragment">Notifications</li>
+          <li class="fragment">Push API</li>
+          <li class="fragment">And so on...</li>
         </ul>
       </section>
       <section>
-        <h2>Fetch API</h2>
+        <h2>Fetch API (Basic)</h2>
         <pre class="javascript"><code contenteditable data-trim>
-fetch(requestOrURL)
-  .then(resp => res.json())
-  .then(json => process(json))
+fetch("https://example.com/some/text/")
+  .then(response => handleResponse(response))
+  .catch(err);
         </code></pre>
+      </section>
+      <section>
+        <h2>Fetch API (Fancy Request)</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+const request = new Request(url, opts);
+
+fetch(request)
+  .then(response => handleResponse(response))
+  .catch(err);
+        </code></pre>
+      </section>
+      <section>
+        <h2><code>Request</code> objects</h2>
+        <ul>
+          <li class="fragment">
+            <code>url</code>
+          </li>
+          <li class="fragment">
+            <code>method</code> (GET, POST, HEAD, etc.)
+          </li>
+          <li class="fragment">
+            <code>mode</code> (CORS)
+          </li>
+          <li class="fragment">
+            <code>redirect</code> ("follow", "error", "manual")
+          </li>
+          <li class="fragment">
+            <code>referrer</code>
+          </li>
+          <li class="fragment">
+            <code>referrerPolicy</code> (e.g., "origin")
+          </li>
+          <li class="fragment">
+            <code>headers</code> (custom headers)
+          </li>
+        </ul>
+      </section>
+      <section>
+        <h2><code>Request</code> objects</h2>
+        <pre class="javascript"><code contenteditable data-trim>
+var req = new Request("/test/", {
+  referrer: "http://localhost:8080/foo/bar",
+  referrerPolicy: "origin", //"unsafe-url"
+});
+fetch(req).then(lookAtAnotherExample);
+        </code></pre>
+      </section>
+      <section data-background="images/request.png" data-background-size="60%">
       </section>
       <section>
         <h2><code>Request</code> objects</h2>
@@ -102,44 +173,171 @@ var req = new Request("./process", {
   method: "POST",
   body: JSON.stringify({greeting: "Hi"})
 });
-fetch(req)
-  .then(letsLookAtResponse);
+// Go, fetch!
+fetch(req).then(letsLookAtResponse);
         </code></pre>
       </section>
       <section>
         <h2><code>Response</code> objects</h2>
+        <ul>
+          <li class="fragment">
+            <code>url</code>
+          </li>
+          <li class="fragment">
+            <code>type</code> (basic, error, opaque, etc.)
+          </li>
+          <li class="fragment">
+            <code>redirected</code>
+          </li>
+          <li class="fragment">
+            <code>status</code>
+          </li>
+          <li class="fragment">
+            <code>ok</code>
+          </li>
+          <li class="fragment">
+            <code>statusText</code>
+          </li>
+          <li class="fragment">
+            <code>headers</code>
+          </li>
+          <li class="fragment">
+            <code>bodyUsed</code>
+          </li>
+        </ul>
+      </section>
+      <section>
         <pre class="javascript"><code contenteditable data-trim>
 var body = "<h1>Not found</h1>";
 var res = new Response(body, {
   status: 404,
-  statusText: "Not Found"
+  statusText: "Not Found",
 });
         </code></pre>
       </section>
       <section>
+        <h2><code>Body</code> mixin <br>
+        (<code>Request</code> and <code>Response</code>)</h2>
+        <ul>
+          <li class="fragment"><code>arrayBuffer()</code></li>
+          <li class="fragment"><code>blob()</code></li>
+          <li class="fragment"><code>formData()</code></li>
+          <li class="fragment"><code>json()</code></li>
+          <li class="fragment"><code>text()</code></li>
+        </ul>
+      </section>
+      <section>
+        <h2><code>Body</code> mixin</h2>
+        <pre><code contenteditable data-trim>
+var req = new Request("./process", {
+  method: "POST",
+  body: JSON.stringify({greeting: "Hi"})
+});
+
+// consumes the body
+req.json()
+  .then(json => console.log(json))
+  .then(()=> console.log(req.bodyUsed))
+</code></pre>
+      </section>
+      <section>
+        <h2><code>Body</code> mixin</h2>
+        <pre><code contenteditable data-trim>
+var req = new Request("./process", {
+  method: "POST",
+  body: JSON.stringify({greeting: "Hi"})
+});
+
+// clone's body not consumed
+req.clone().json()
+  .then(json => console.log(json))
+  .then(() => console.log(req.bodyUsed))
+</code></pre>
+      </section>
+      <section>
+        <h2>HTTP <code>Headers</code> objects</h2>
+        <ul>
+          <li class="fragment"><code>set(name, value);</code></li>
+          <li class="fragment"><code>delete(name);</code></li>
+          <li class="fragment"><code>get(name);</code></li>
+          <li class="fragment"><code>has(name);</code></li>
+          <li class="fragment">Iterators: <code>keys(), values()</code></li>
+        </ul>
+      </section>
+      <section>
         <h2>HTTP <code>Headers</code> objects</h2>
         <pre class="javascript"><code contenteditable data-trim>
-req.headers.set("x-whatevs", "awesome");
-res.headers.get("x-whatevs", "awesome");
+req.headers.set("whatevs", "awesome");
+res.headers.get("whatevs");
+if(res.headers.has("whatevs")){
+  doWhatevs()
+}
         </code></pre>
       </section>
       <section>
-        <h2>Headers is just a Map</h2>
+        <h2>Hardest problems in <br> computer science?</h2>
+        <ul>
+          <li class="fragment">Does not respect HTTP cache directives.</li>
+          <li class="fragment">Cache invalidation.</li>
+          <li class="fragment">Naming things.</li>
+          <li class="fragment">Volatile (e.g., overcome by addressable IDB).</li>
+        </ul>
       </section>
       <section>
-        <h2>Cache API</h2>
+        <h2><code>CacheStorage</code> API</h2>
+        <h3><code>window.caches</code></h3>
+        <ul>
+          <li class="fragment"><code>.open(name)</code></li>
+          <li class="fragment"><code>.delete(name)</code></li>
+          <li class="fragment"><code>.has(name)</code></li>
+          <li class="fragment"><code>.keys()</code></li>
+          <li class="fragment"><code>.match(request,{options})</code></li>
+        </ul>
+      </section>
+      <section>
+        <h2><code>CacheStorage</code> API</h2>
+        <h3><code>window.caches</code></h3>
         <pre class="javascript"><code contenteditable data-trim>
-const urls = ["./", ""];
-caches.open("test-cache")
-  .then(cache => cache.addAll(urls))
+const urls = ["./", "images/dom.jpg"];
+caches.open("v1")
+  .then(cache => cache.addAll(urls));
+
+caches.match("images/dom", {
+  cacheName: "v1",
+}).then(response => doSomething);
         </code></pre>
       </section>
       <section>
-        <h2>Viewing caches</h2>
-        <pre><code contenteditable data-trim>
-caches.keys()
-  .then(k => console.log(k));
-        </code></pre>
+        <h2>Viewing caches in browsers</h2>
+      </section>
+      <section>
+        <h2><code>Cache</code> API</h2>
+        <ul>
+          <li class="fragment"><code>add()</code></li>
+          <li class="fragment"><code>addAll()</code></li>
+          <li class="fragment"><code>delete()</code></li>
+          <li class="fragment"><code>keys()</code></li>
+          <li class="fragment"><code>match()</code></li>
+          <li class="fragment"><code>matchAll()</code></li>
+          <li class="fragment"><code>put()</code></li>
+        </ul>
+      </section>
+      <section>
+        <pre class="javascript"><code contenteditable data-trim>
+caches.open(cacheName)
+  .then(cache => cache.put(request, response.clone())
+  .then(doStuff);
+  </code></pre>
+      </section>
+      <section
+        data-background="images/elise.png"
+        data-background-size="100%"
+        data-background-position="bottom left">
+      </section>
+      <section
+        data-background="images/inlineremover.png"
+        data-background-size="100%"
+        data-background-position="bottom left">
       </section>
       <section>
         <h2>Notifications (<button onclick="showNotification()">❤️</button>)</h2>
@@ -150,32 +348,47 @@ Notification.requestPermission()
       return;
     }
     const noti = new Notification("OMG HI");
-    noti.onclick = doSomething;
+    noti.onclick = () => console.log("click!");
   });
         </code></pre>
       </section>
       <section>
         <h2>Push</h2>
+        <p>Is a lot of work to set up...</p>
       </section>
-      <section>
-        <h2>about:debugging#workers</h2>
+      <section data-background="images/push_reg.png" data-background-size="100%"
+      data-background-position="top right">
+        <h2>Push - emulation</h2>
+        <ul>
+          <li>Firefox: about:debugging#workers</li>
+          <li>Chrome dev tools</li>
+        </ul>
       </section>
-      <section>
+      <section data-background="images/wicg.png"
+        data-background-size="100%"
+        data-background-position="bottom left">
         <h2>Learn to ❤️ specs</h2>
+        <h3><a href="https://wicg.io">wicg.io</a></h3>
       </section>
-      <section>
+      <section
+        data-background="images/mdn.png"
+        data-background-size="100%"
+        data-background-position="20% 130%">
         <h2>Ok, ❤️ MDN</h2>
       </section>
-      <section>
-        <h2>...And ❤️ service workers cookbook</h2>
+      <section
+        data-background="images/jsworkshops.svg"
+        data-background-size="20%"
+        data-background-position="5% center">
+        <h2>JS Workshops Meetup</h2>
       </section>
       <section>
-        <h2>Thanks!</h2>
+        <h2>Go, make stuff!</h2>
       </section>
     </div>
   </div>
   <script>
-  document.addEventListener("DOMContentLoaded", ()=>{
+  document.addEventListener("DOMContentLoaded", () => {
     // Full list of configuration options available here:
     // https://github.com/hakimel/reveal.js#configuration
     Reveal.initialize({
