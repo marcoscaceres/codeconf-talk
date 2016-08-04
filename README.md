@@ -4,3 +4,5 @@ This talk was part of [Code 2016](http://webdirections.org/code16/speakers/marco
 
 ## View the talk
 
+ * [slides](https://marcoscaceres.github.io/codeconf-talk/#/)
+ * video coming soon.
